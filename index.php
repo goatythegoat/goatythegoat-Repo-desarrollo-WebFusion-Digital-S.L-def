@@ -1,9 +1,31 @@
 <?php
-echo "<div style='background: #0073aa; color: white; padding: 20px; text-align: center; font-family: sans-serif;'>";
-echo "<h1>Holacomostan</h1>";
-echo "<p>probando probando.</p>";
-echo "<p>hola</p>";
-echo "</div>";
+/* Template Name: Pagina Principal Ejercicio */
+?>
+<!DOCTYPE html>
+<html <?php language_attributes(); ?>>
+<head>
+    <meta charset="<?php bloginfo( 'charset' ); ?>">
+    <?php wp_head(); ?>
+</head>
+<body <?php body_class(); ?>>
 
-define( 'WP_USE_THEMES', true );
-require __DIR__ . '/wp-blog-header.php';
+    <div style='background: #0073aa; color: white; padding: 20px; text-align: center; font-family: sans-serif;'>
+        <h1>Holacomostan</h1>
+        <p>probando probando.</p>
+        <p>hola</p>
+    </div>
+
+    <div style="max-width: 800px; margin: 20px auto; padding: 20px;">
+        <?php
+        if ( have_posts() ) :
+            while ( have_posts() ) : the_post();
+                the_title('<h2>', '</h2>');
+                the_content();
+            endwhile;
+        endif;
+        ?>
+    </div>
+
+    <?php wp_footer(); ?>
+</body>
+</html>
