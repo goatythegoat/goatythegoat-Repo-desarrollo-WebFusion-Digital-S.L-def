@@ -1,0 +1,41 @@
+services:
+  mysql:
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: secret
+      MYSQL_DATABASE: wordpress
+      MYSQL_USER: wordpress
+      MYSQL_PASSWORD: "1234"
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+  wordpress:
+    depends_on:
+      - mysql
+    image: wordpress:latest
+    ports:
+      - "8080:80"
+    volumes:
+      - wp_data:/var/www/html
+
+  git-helper:
+    image: alpine/git
+    volumes:
+      - wp_data:/repo
+    working_dir: /repo
+    entrypoint: |
+      sh -c "
+      git config --global --add safe.directory /repo
+      if [ ! -d '.git' ]; then
+        git init
+        git remote add origin https://github.com/goatythegoat/goatythegoat-Repo-desarrollo-WebFusion-Digital-S.L-def.git
+        git fetch
+        git checkout -f main
+      else
+        git pull origin main
+      fi
+      "
+
+volumes:
+  mysql_data:
+  wp_data:
