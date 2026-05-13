@@ -1,6 +1,7 @@
 services:
   mysql:
     image: mysql:5.7
+    restart: always
     environment:
       MYSQL_ROOT_PASSWORD: secret
       MYSQL_DATABASE: wordpress
@@ -15,25 +16,37 @@ services:
     image: wordpress:latest
     ports:
       - "8080:80"
+    restart: always
+    environment:
+      WORDPRESS_DB_HOST: mysql:3306
+      WORDPRESS_DB_USER: wordpress
+      WORDPRESS_DB_PASSWORD: "1234"
+      WORDPRESS_DB_NAME: wordpress
     volumes:
       - wp_data:/var/www/html
 
   git-helper:
     image: alpine/git
     volumes:
-      - wp_data:/repo
-    working_dir: /repo
+      - wp_data:/var/www/html
     entrypoint: |
       sh -c "
-      git config --global --add safe.directory /repo
+      mkdir -p /var/www/html/wp-content/themes/prueba
+      cd /var/www/html/wp-content/themes/prueba
+      
+      git config --global --add safe.directory /var/www/html/wp-content/themes/prueba
+      
       if [ ! -d '.git' ]; then
+        echo 'clonando repo'
         git init
         git remote add origin https://github.com/goatythegoat/goatythegoat-Repo-desarrollo-WebFusion-Digital-S.L-def.git
         git fetch
         git checkout -f main
       else
+        echo 'Actualizando repo'
         git pull origin main
       fi
+      echo 'sincronizacion finalizada'
       "
 
 volumes:
