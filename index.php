@@ -12,7 +12,7 @@
     <div style='background: #0073aa; color: white; padding: 20px; text-align: center; font-family: sans-serif;'>
         <h1>Holacomostan</h1>
         <p>probando probando.</p>
-        <p>hola</p>
+        <p>texto editado</p>
     </div>
 
     <div style="max-width: 800px; margin: 20px auto; padding: 20px;">
